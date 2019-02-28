@@ -1,5 +1,5 @@
 const http = require('http');
-const fse = require('fs-extra');
+const fs = require('fs');
 const formidable = require('formidable');
 const path = require('path');
 
@@ -14,9 +14,13 @@ http.createServer(function (req, res) {
 			res.end('received upload: ' + files.upload.type + '\n\n');
 			// console.log(files.upload.type);
 			if (files.upload.type == 'application/pdf') {
-				fse.move(files.upload.path, path.join('/home/pi/pi_file_server/pdf', files.upload.name))
+				fs.rename(files.upload.path, path.join('/home/pi/pi_file_server/pdf', files.upload.name), function (err) {
+					if (err) throw err;
+				});
 			} else {
-				fse.move(files.upload.path, path.join('/home/pi/pi_file_server/doc', files.upload.name))
+				fs.rename(files.upload.path, path.join('/home/pi/pi_file_server/doc', files.upload.name), function (err) {
+					if (err) throw err;
+				});
 			}
 			// res.end(util.inspect({ fields: fields, files: files }));
 		});
