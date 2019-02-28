@@ -11,7 +11,7 @@ http.createServer(function (req, res) {
 		form.parse(req, function (err, fields, files) {
 			if (err) throw err;
 			res.writeHead(200, { 'content-type': 'text/plain' });
-			res.end(`received upload: ${files.upload.type}\n\n`);
+			res.end('received upload: ' + files.upload.type + '\n\n');
 			// console.log(files.upload.type);
 			if (files.upload.type == 'application/pdf') {
 				fse.move(files.upload.path, path.join('/home/pi/pi_file_server/pdf', files.upload.name))
