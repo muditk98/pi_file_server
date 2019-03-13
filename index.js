@@ -28,7 +28,7 @@ http.createServer(function (req, res) {
 			res.writeHead(200, { 'content-type': 'text/plain' });
 			res.end('received upload: ' + files.upload.type + '\n\n');
 			console.log('New file of mimetype: ' + files.upload.type);
-			console.log('File name: ' + file.upload.name);
+			console.log('File name: ' + files.upload.name);
 			var folder_path = mime_to_path[files.upload.type] || others_path;
 			fs.rename(
 				files.upload.path,
