@@ -3,17 +3,33 @@ const fs = require('fs');
 const formidable = require('formidable');
 const path = require('path');
 
+
 const pdf_path = path.join(__dirname, 'pdf')
 const doc_path = path.join(__dirname, 'doc')
 const docx_path = path.join(__dirname, 'docx')
 const jpg_path = path.join(__dirname, 'jpg')
 const html_path = path.join(__dirname, 'html')
 const others_path = path.join(__dirname, 'others')
+
+paths = [
+	pdf_path,
+	doc_path,
+	docx_path,
+	jpg_path,
+	html_path,
+	others_path
+]
+paths.forEach(folder => {
+	if (!fs.existsSync(folder)) {
+		fs.mkdirSync(folder)
+	}
+});
+
 const mime_to_path = {
 	'application/pdf': pdf_path,
 	'application/msword': doc_path,
 	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': docx_path,
-	'image/jpg': jpg_path,
+	'image/jpeg': jpg_path,
 	'text/html': html_path
 }
 const PORT = process.env.PORT || 3000;
