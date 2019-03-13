@@ -16,6 +16,7 @@ const mime_to_path = {
 	'image/jpg': jpg_path,
 	'text/html': html_path
 }
+const PORT = process.env.PORT || 3000;
 
 http.createServer(function (req, res) {
 	if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
@@ -26,21 +27,16 @@ http.createServer(function (req, res) {
 			if (err) throw err;
 			res.writeHead(200, { 'content-type': 'text/plain' });
 			res.end('received upload: ' + files.upload.type + '\n\n');
-			// console.log(files.upload.type);
-			if (mime_to_path[files.upload.type]) {
-				fs.rename(
-					files.upload.path,
-					path.join(mime_to_path[files.upload.type], files.upload.name),
-					function (err) {
-					if (err) throw err;
-				});
-			} else {
-				fs.rename(files.upload.path,
-					path.join(others_path, files.upload.name),
-					function (err) {
-					if (err) throw err;
-				});
-			}
+			console.log(`New file of mimetype: ${files.upload.type}`);
+			console.log(`File name: ${file.upload.name}`);
+			var folder_path = mime_to_path[files.upload.type] || others_path;
+			fs.rename(
+				files.upload.path,
+				path.join(folder_path, files.upload.name),
+				function (err) {
+				if (err) throw err;
+			});
+			console.log(`File saved to ${folder_path}`);
 			// res.end(util.inspect({ fields: fields, files: files }));
 		});
 
@@ -57,4 +53,4 @@ http.createServer(function (req, res) {
 		'<input type="submit" value="Upload">' +
 		'</form>'
 	);
-}).listen(8080);
+}).listen(PORT);
