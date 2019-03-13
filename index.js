@@ -3,6 +3,20 @@ const fs = require('fs');
 const formidable = require('formidable');
 const path = require('path');
 
+const pdf_path = path.join(__dirname, 'pdf')
+const doc_path = path.join(__dirname, 'doc')
+const docx_path = path.join(__dirname, 'docx')
+const jpg_path = path.join(__dirname, 'jpg')
+const html_path = path.join(__dirname, 'html')
+const others_path = path.join(__dirname, 'others')
+const mime_to_path = {
+	'application/pdf': pdf_path,
+	'application/msword': doc_path,
+	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': docx_path,
+	'image/jpg': jpg_path,
+	'text/html': html_path
+}
+
 http.createServer(function (req, res) {
 	if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
 		// parse a file upload
@@ -13,12 +27,17 @@ http.createServer(function (req, res) {
 			res.writeHead(200, { 'content-type': 'text/plain' });
 			res.end('received upload: ' + files.upload.type + '\n\n');
 			// console.log(files.upload.type);
-			if (files.upload.type == 'application/pdf') {
-				fs.rename(files.upload.path, path.join('/home/pi/pi_file_server/pdf', files.upload.name), function (err) {
+			if (mime_to_path[files.upload.type]) {
+				fs.rename(
+					files.upload.path,
+					path.join(mime_to_path[files.upload.type], files.upload.name),
+					function (err) {
 					if (err) throw err;
 				});
 			} else {
-				fs.rename(files.upload.path, path.join('/home/pi/pi_file_server/doc', files.upload.name), function (err) {
+				fs.rename(files.upload.path,
+					path.join(others_path, files.upload.name),
+					function (err) {
 					if (err) throw err;
 				});
 			}
