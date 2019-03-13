@@ -27,8 +27,8 @@ http.createServer(function (req, res) {
 			if (err) throw err;
 			res.writeHead(200, { 'content-type': 'text/plain' });
 			res.end('received upload: ' + files.upload.type + '\n\n');
-			console.log(`New file of mimetype: ${files.upload.type}`);
-			console.log(`File name: ${file.upload.name}`);
+			console.log('New file of mimetype: ' + files.upload.type);
+			console.log('File name: ' + file.upload.name);
 			var folder_path = mime_to_path[files.upload.type] || others_path;
 			fs.rename(
 				files.upload.path,
@@ -36,7 +36,7 @@ http.createServer(function (req, res) {
 				function (err) {
 				if (err) throw err;
 			});
-			console.log(`File saved to ${folder_path}`);
+			console.log('File saved to: ' + folder_path);
 			// res.end(util.inspect({ fields: fields, files: files }));
 		});
 
